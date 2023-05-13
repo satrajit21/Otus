@@ -5,6 +5,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import ResetPasswordForm from '../../Sections/auth/ResetPasswordForm'
 
 const ResetPassword = () => {
+  
   return (
     <>
         <Stack spacing={2} sx={{
