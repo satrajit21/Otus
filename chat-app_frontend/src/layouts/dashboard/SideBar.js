@@ -7,8 +7,37 @@ import { Gear } from "phosphor-react";
 import { useState } from "react";
 import { faker } from "@faker-js/faker";
 import useSettings from "../../hooks/useSettings";
+import { useNavigate } from "react-router-dom";
+const getPath=(index)=>{
+  switch (index) {
+    case 0:
+      return "/app";
+      case 1:
+        return "/group";
+      case 2:
+          return "/call";
+      case 3:
+        return "/settings"
+    default:
+      break;
+  }
+}
+const getMenupath=(index)=>{
+  switch (index) {
+    case 0:
+      return "/profile"
+    case 1:
+      return "/settings"
+    case 2:
+      //TODO => Update token and set isAuthenticated=false
+      return "/auth/login"
+    default:
+      break;
+  }
+}
 const SideBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate=useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -59,6 +88,7 @@ const [selected,setSelected]=useState(0)
              <IconButton
              onClick={()=>{
               setSelected(el.index)
+              navigate(getPath(el.index))
              }}
              sx={{width:"max-content",color:theme.palette.mode === "light" ? "#000" :theme.palette.text.primary}} 
              key={el.index}>
@@ -76,6 +106,7 @@ const [selected,setSelected]=useState(0)
           </Box>
           :
           <IconButton onClick={()=>{
+            navigate(getPath(3))
             setSelected(3)
           }}
           sx={{width:"max-content",color:theme.palette.mode === "light" ? "#000" :theme.palette.text.primary}} >
@@ -115,11 +146,16 @@ const [selected,setSelected]=useState(0)
         }}
       >
         <Stack spacing={1} px={1}>
-            {Profile_Menu.map((el)=>(
-                <MenuItem onClick={handleClick}>
+            {Profile_Menu.map((el,idx)=>(
+                <MenuItem onClick={()=>{
+                  handleClick();
+                }}>
                   <Stack direction="row" alignItems={"center"}
                   justifyContent={"space-between"}
-                  sx={{width:100}}>
+                  sx={{width:100}}
+                  onClick={()=>{
+                    navigate(getMenupath(idx))
+                  }}>
                     <span>
                     {el.title}
                       </span>
