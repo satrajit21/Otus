@@ -7,19 +7,22 @@ import FormProvider from '../../components/hook-form/FormProvider';
 import { Alert, Button, IconButton, InputAdornment, Stack } from '@mui/material';
 import RHFTextField from '../../components/hook-form/RHFTextField';
 import { Eye, EyeSlash } from 'phosphor-react';
+import { RegisterUser } from '../../Redux/slices/auth';
+import { useDispatch } from 'react-redux';
 //import { LoadingButton } from "@mui/lab";
 const RegisterForm = () => {
+  const dispatch = useDispatch();
     const [showPassword,setShowPassword]=useState(false);
     
     const RegisterSchema=Yup.object().shape({
         firstName:Yup.string().required("This is a mandatory field"),
-        lasttName:Yup.string().required("This is a mandatory field"),
+        lastName:Yup.string().required("This is a mandatory field"),
         email:Yup.string().required("Email is required").email("Email must be valid"),
-        password:Yup.string().required("Password is required").min(10,"Password must be min of 10 characters"),
+        password:Yup.string().required("Password is required").min(6,"Password must be min of 6 characters"),
     })
     const defaultValues={
         firstName:"",
-        lasttName:"",
+        lastName:"",
         email:"demo@owly.com",
         password:"demo123"
 
@@ -29,11 +32,12 @@ const RegisterForm = () => {
         defaultValues
     })
     const {reset,setError,handleSubmit,
-        formState:{errors,isSubmitSuccessful,isSubmitting}}=methods;
+        formState:{errors }}=methods;
     
         const onSubmit= async(data)=>{
             try{
                 //submit data to backend
+                dispatch(RegisterUser(data));
             }
             catch(error){
                 console.log(error);
@@ -91,4 +95,4 @@ const RegisterForm = () => {
   )
 }
 
-export default RegisterForm
+export default RegisterForm;

@@ -6,9 +6,12 @@ import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
 import { Alert, Button,Stack } from '@mui/material'
 import RHFTextField from "../../components/hook-form/RHFTextField"
+import { ForgotPassword } from '../../Redux/slices/auth'
+import {useDispatch} from 'react-redux';
 
 //import {useTheme} from "@mui/material/styles"
 const ResetPasswordForm = () => { 
+    const dispatch = useDispatch();
     const ResetPasswordSchema=Yup.object().shape({
         email:Yup.string().required("Email is required").email("Email must be valid"),
         
@@ -27,6 +30,7 @@ const ResetPasswordForm = () => {
         const onSubmit= async(data)=>{
             try{
                 //submit data to backend
+                dispatch(ForgotPassword(data))
             }
             catch(error){
                 console.log(error);

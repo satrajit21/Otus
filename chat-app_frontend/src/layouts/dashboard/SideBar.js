@@ -7,6 +7,8 @@ import { Gear } from "phosphor-react";
 import { useState } from "react";
 import { faker } from "@faker-js/faker";
 import useSettings from "../../hooks/useSettings";
+import { logoutUser } from "../../Redux/slices/auth";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const getPath=(index)=>{
   switch (index) {
@@ -37,6 +39,7 @@ const getMenupath=(index)=>{
 }
 const SideBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
   const navigate=useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -150,12 +153,18 @@ const [selected,setSelected]=useState(0)
                 <MenuItem onClick={()=>{
                   handleClick();
                 }}>
-                  <Stack direction="row" alignItems={"center"}
+                  <Stack onClick={() => {
+                    if (idx === 2) {
+                      dispatch(logoutUser())
+                    }
+                    else {
+                      navigate(getMenupath(idx))
+                    }
+                  }}
+                  direction="row" alignItems={"center"}
                   justifyContent={"space-between"}
                   sx={{width:100}}
-                  onClick={()=>{
-                    navigate(getMenupath(idx))
-                  }}>
+                  >
                     <span>
                     {el.title}
                       </span>
